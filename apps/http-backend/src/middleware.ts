@@ -3,8 +3,10 @@ import { JWT_SECRET } from "@repo/backend-common/config";
 import { NextFunction } from "express";
 
 export function middleware(req: Request, res: Response, next: NextFunction) {
+  console.log("insisde middlewaer ");
   //@ts-ignore
   const token = req.headers["authorization"] ?? "";
+
   console.log(token);
   const decoded = jwt.verify(token, JWT_SECRET);
 

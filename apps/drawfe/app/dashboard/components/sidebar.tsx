@@ -11,6 +11,7 @@ export function Sidebar() {
         <div className=" flex w-full justify-center ">
           <Logo />
         </div>
+        <div className="w-full flex  "></div>
         <div>
           <Sidecomp icon={<User className="h-7 w-7 " />} txt="Rooms " />
           <Sidecomp icon={<Users className="h-7 w-7 " />} txt="Profile " />
