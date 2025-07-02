@@ -159,6 +159,7 @@ app.get("/getroom", middleware, async (req, res) => {
 
 app.get("/room/:slug", async (req, res) => {
   const slug = req.params.slug;
+
   const room = await prismaClient.room.findFirst({
     where: {
       slug,
@@ -172,9 +173,10 @@ app.get("/room/:slug", async (req, res) => {
   });
 });
 
-app.get("/chats/:roomId", async (req, res) => {
+app.post("/chats/:roomId", async (req, res) => {
   try {
     const roomId = Number(req.params.roomId);
+    const slide = Number(req.body.slide);
     console.log("this is roomd Id ");
     console.log(req.params.roomId);
     if (isNaN(roomId)) {
@@ -185,6 +187,7 @@ app.get("/chats/:roomId", async (req, res) => {
     const messages = await prismaClient.chat.findMany({
       where: {
         roomId: roomId,
+        slide: slide,
       },
       orderBy: {
         id: "desc",

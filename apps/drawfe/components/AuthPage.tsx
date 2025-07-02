@@ -167,6 +167,12 @@ async function Signinfun({
     if (data.data.token) {
       //@ts-ignore
       localStorage.setItem("authorization", data.data.token);
+
+      console.log("hello there setting up localstorage item ");
+      console.log(
+        "got access to localstorage ",
+        localStorage.getItem("authorization")
+      );
       router.push("/room");
     }
   } catch (e) {

@@ -15,6 +15,7 @@ CREATE TABLE "Chat" (
     "message" TEXT NOT NULL,
     "roomId" INTEGER NOT NULL,
     "UserId" TEXT NOT NULL,
+    "slide" INTEGER NOT NULL,
 
     CONSTRAINT "Chat_pkey" PRIMARY KEY ("id")
 );

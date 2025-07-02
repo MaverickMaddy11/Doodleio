@@ -18,6 +18,7 @@ const wss = new WebSocketServer({ port: 8080 });
 
 function checkUser(token: string): string | null {
   try {
+    console.log("user is ", token);
     const decoded = jwt.verify(token, JWT_SECRET);
     if (typeof decode == "string") {
       return null;
@@ -89,6 +90,7 @@ wss.on("connection", function connection(ws, request) {
     if (parsedData.type == "chat") {
       const roomId = parsedData.roomId;
       const message = parsedData.message;
+      const slide = parsedData.slide;
 
       users.forEach((user) => {
         if (user.rooms.includes(roomId)) {
@@ -97,6 +99,7 @@ wss.on("connection", function connection(ws, request) {
               type: "chat",
               message: message,
               roomId,
+              slide,
             })
           );
         }
@@ -109,6 +112,7 @@ wss.on("connection", function connection(ws, request) {
           message,
           //@ts-ignore
           UserId,
+          slide,
         },
       });
     }

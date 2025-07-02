@@ -28,8 +28,10 @@ model Chat{
   message String 
   roomId Int 
   UserId String 
+  slide Int
   room Room @relation(fields: [roomId] , references: [id])
   user User @relation(fields: [UserId] , references: [id])
+
 
 }
 

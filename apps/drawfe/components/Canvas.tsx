@@ -8,6 +8,8 @@ import {
   RectangleHorizontal,
   RectangleHorizontalIcon,
   Slash,
+  SquareChevronRight,
+  SquareChevronLeft,
 } from "lucide-react";
 import { Game } from "@/app/draw/game";
 
@@ -28,6 +30,7 @@ export function Canvascomp({
     //@ts-ignore
     // window.selectedTool = SelectedTool;
     game?.setShape(SelectedTool);
+    game?.init();
   }, [SelectedTool, game]);
 
   useEffect(() => {
@@ -55,7 +58,11 @@ export function Canvascomp({
       >
         {" "}
       </canvas>
-      <TopBar SelectedTool={SelectedTool} SetSelectedTool={SetSelectedTool} />
+      <TopBar
+        SelectedTool={SelectedTool}
+        SetSelectedTool={SetSelectedTool}
+        g={game}
+      />
     </div>
   );
 }
@@ -63,10 +70,14 @@ export function Canvascomp({
 function TopBar({
   SelectedTool,
   SetSelectedTool,
+  g,
 }: {
   SelectedTool: Tool;
   SetSelectedTool: (s: Tool) => void;
+  g?: Game;
 }) {
+  const [slideno, getslideno] = useState(0);
+
   return (
     <div
       style={{
@@ -75,6 +86,7 @@ function TopBar({
         left: 10,
       }}
     >
+      <div className=" text-3xl text-white p-2">{slideno}</div>
       <IconButton
         icon={<Pencil />}
         onClick={() => {
@@ -103,6 +115,30 @@ function TopBar({
           SetSelectedTool("line");
         }}
         activated={SelectedTool == "line"}
+      />
+
+      <IconButton
+        icon={<SquareChevronRight />}
+        onClick={() => {
+          if (slideno + 1 <= 5) {
+            console.log("slide is increased ");
+            g?.nextSlide();
+            getslideno((slideno) => slideno + 1);
+          }
+        }}
+        activated={false}
+      />
+
+      <IconButton
+        icon={<SquareChevronLeft />}
+        onClick={() => {
+          if (slideno - 1 >= 0) {
+            console.log("slide is decreased ");
+            g?.prevSlide();
+            getslideno((slideno) => slideno - 1);
+          }
+        }}
+        activated={false}
       />
     </div>
   );

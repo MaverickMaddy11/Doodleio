@@ -27,7 +27,8 @@ export async function initDraw(
   socket: WebSocket
 ) {
   const ctx = canvas.getContext("2d");
-  let existinShapes: Shape[] = await getExsistingShapes(roomId);
+  const slid = 0;
+  let existinShapes: Shape[] = await getExsistingShapes(roomId, slid);
   console.log("in index.ts draw >..................");
   console.log(roomId);
 
@@ -148,8 +149,10 @@ function clearCanvas(
   });
 }
 
-export async function getExsistingShapes(roomId: string) {
-  const res = await axios.get(`${HTTP_BACKEND}/chats/${roomId}`);
+export async function getExsistingShapes(roomId: string, slide: number) {
+  const res = await axios.post(`${HTTP_BACKEND}/chats/${roomId}`, {
+    slide: slide,
+  });
   const messages = res.data.messages;
 
   const shapes = messages.map((x: { message: string }) => {

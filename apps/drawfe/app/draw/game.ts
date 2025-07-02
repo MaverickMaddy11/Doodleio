@@ -39,6 +39,7 @@ export class Game {
   private starty: number;
   private selectedTool: Tool = "circle";
   private arr: [number, number][] = [];
+  private slide: number;
 
   constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
     this.canvas = canvas;
@@ -53,21 +54,42 @@ export class Game {
     this.starty = 0;
     this.arr = [];
     this.initMouseHandler();
+    this.slide = 0;
   }
 
   setShape(tool: Tool) {
     this.selectedTool = tool;
   }
 
+  nextSlide() {
+    if (this.slide + 1 <= 5) {
+      this.slide++;
+      this.init();
+    }
+  }
+
+  prevSlide() {
+    if (this.slide - 1 >= 0) {
+      this.slide--;
+      this.init();
+    }
+  }
+
+  getslide() {
+    return this.slide;
+  }
+
   async init() {
-    this.existingshape = await getExsistingShapes(this.roomId);
+    this.existingshape = await getExsistingShapes(this.roomId, this.slide);
     this.clearCanvas();
   }
 
   initHandler() {
     this.socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      if (message.type == "chat") {
+
+      if (message.type == "chat" && message.slide == this.slide) {
+        console.log(this.slide);
         const parsedShape = JSON.parse(message.message);
         this.existingshape.push(parsedShape.shape);
         this.clearCanvas();
@@ -196,6 +218,7 @@ export class Game {
         }),
         //@ts-ignore
         roomId: this.roomId,
+        slide: this.slide,
       })
     );
   };
